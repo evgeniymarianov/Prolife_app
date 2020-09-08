@@ -1,10 +1,10 @@
 from django.contrib import admin
 
 from .models import Category, GiftAddress, Gift, GiftShot, Comment
+from crisis_line.models import Case, Nko
 
 from django import forms
 from django.contrib import admin
-# from modeltranslation.admin import TranslationAdmin
 from django.utils.safestring import mark_safe
 
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
@@ -132,3 +132,5 @@ class GiftShotAdmin(admin.ModelAdmin):
 
 admin.site.site_title = "Django Gifts"
 admin.site.site_header = "Django Gifts"
+admin.site.register(Case)
+admin.site.register(Nko)

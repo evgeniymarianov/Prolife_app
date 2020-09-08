@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
 
-from .models import Gift
+from .models import Gift, Category
 from .forms import CommentForm
 
 class GiftsView(ListView):
@@ -29,3 +29,8 @@ class AddComment(View):
             form.gift = gift
             form.save()
         return redirect(gift.get_absolute_url())
+
+
+
+def index(request):
+    return render(request, 'map.html')

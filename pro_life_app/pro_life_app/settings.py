@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'gifts',
     'ckeditor',
     'ckeditor_uploader',
+    'crisis_line',
 ]
 
 MIDDLEWARE = [
