@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'crisis_line',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -199,4 +200,9 @@ CKEDITOR_CONFIGS = {
             'elementspath',
         ]),
     }
+}
+
+
+REST_FRAMEWORK = {
+
 }

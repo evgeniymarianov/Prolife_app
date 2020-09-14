@@ -13,8 +13,8 @@
 
     <div class="container mt-4">
       <h1>Hello, world!</h1>
-      {% for case in list_cases %}
-
+      {% block case %}
+        {% for case in case_list %}
           <ul class="list-group mt-4">
 
             <li class="list-group-item">
@@ -26,8 +26,8 @@
             </li>
 
           </ul>
-
-      {% endfor %}
+        {% endfor %}
+      {% endblock case %}
     </div>
 
     <!-- Optional JavaScript -->

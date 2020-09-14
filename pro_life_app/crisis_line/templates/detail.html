@@ -22,10 +22,25 @@
     <h1>Обращение от {{get_case.create_date }}</h1>
     <ul class="list-group mt-4">
       <li class="list-group-item">
-        <b>CPU = {{ get_case.cpu }}</b>
-        <b>RAM = {{ get_case.ram }}</b>
-        <b>HDD type = {{ get_case.type }}</b>
-        <b>HDD hdd_capacity = {{ get_case.hdd_capacity }}</b>
+        <b>Дата обращения = {{ get_case.create_date }}</b><br>
+        <b>Имя обратившейся = {{ get_case.name }}</b><br>
+        <b>Телефон = {{ get_case.phone }}</b><br>
+        <b>Описание {{ get_case.description }}</b>
+        {% for task in get_case.task_set.all %}
+
+        <ul class="list-group mt-4">
+
+          <li class="list-group-item">
+            <b>Задача от {{ task.create_date }}</b><br>
+               <span class="m-2">Статус задачи: {{ task.status }}</span><br>
+               <span>Назначеное НКО: {{ task.nko }}</span><br>
+               <span>Описание задачи: {{ task.description }}</span>
+               <span class="float-right mr-3"><a href="#">Перейти к задаче</a></span>
+          </li>
+
+        </ul>
+
+        {% endfor %}
         <span class="mt-5"><a href="">Редактировать</a><span>
         <span class="float-right"><a href="">Удалить</a><span>
       </li>
