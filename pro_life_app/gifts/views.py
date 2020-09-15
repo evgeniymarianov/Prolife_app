@@ -1,62 +1,50 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
-from django.http import HttpResponse, JsonResponse
-from rest_framework.response import Response
-from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, JsonResponse, Http404
 from rest_framework.parsers import JSONParser
 from gifts.serializers import GiftSerializer
-from rest_framework import status
-from rest_framework.decorators import api_view
-
+from rest_framework import mixins
+from rest_framework import generics
 
 from .models import Gift, Category
 from .forms import CommentForm
 
 
-@api_view(['GET', 'POST'])
-def gift_list(request):
+class GiftList(mixins.ListModelMixin,
+               mixins.CreateModelMixin,
+               generics.GenericAPIView):
     """
     List all code gifts, or create a new gift.
     """
-    if request.method == 'GET':
-        gifts = Gift.objects.all()
-        serializer = GiftSerializer(gifts, many=True)
-        return Response(serializer.data)
+    queryset = Gift.objects.all()
+    serializer_class = GiftSerializer
 
-    elif request.method == 'POST':
-        serializer = GiftSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
 
-@csrf_exempt
-def gift_detail(request, pk):
+class GiftDetail(mixins.RetrieveModelMixin,
+                 mixins.UpdateModelMixin,
+                 mixins.DestroyModelMixin,
+                 generics.GenericAPIView):
     """
     Retrieve, update or delete a code gift.
     """
-    try:
-        gift = Gift.objects.get(pk=pk)
-    except Gift.DoesNotExist:
-        return HttpResponse(status=404)
+    queryset = Gift.objects.all()
+    serializer_class = GiftSerializer
 
-    if request.method == 'GET':
-        serializer = GiftSerializer(gift)
-        return JsonResponse(serializer.data)
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
 
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = GiftSerializer(gift, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
 
-    elif request.method == 'DELETE':
-        gift.delete()
-        return HttpResponse(status=204)
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
 
 
 class GiftsView(ListView):
