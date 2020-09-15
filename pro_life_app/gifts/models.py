@@ -91,7 +91,7 @@ class Comment(models.Model):
     parent = models.ForeignKey(
         'self', verbose_name="Родитель", on_delete=models.SET_NULL, blank=True, null=True
     )
-    gift = models.ForeignKey(Gift, verbose_name="Дар", on_delete=models.CASCADE)
+    gift = models.ForeignKey(Gift, verbose_name="Дар", on_delete=models.CASCADE, related_name="gift_comments")
 
     def __str__(self):
         return f"{self.name} - {self.gift}"
