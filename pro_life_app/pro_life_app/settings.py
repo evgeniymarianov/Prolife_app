@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'crisis_line',
     'rest_framework',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -204,5 +205,7 @@ CKEDITOR_CONFIGS = {
 
 
 REST_FRAMEWORK = {
-
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
 }

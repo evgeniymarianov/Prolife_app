@@ -3,14 +3,24 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
 from django.http import HttpResponse, JsonResponse, Http404
 from rest_framework.parsers import JSONParser
-from gifts.serializers import GiftListSerializer, CommentCreateSerializer
+from gifts.serializers import (
+    AddressListSerializer,
+    GiftListSerializer,
+    CommentCreateSerializer,
+)
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
-from .models import Gift, Category
+from django_filters.rest_framework import DjangoFilterBackend
+from .models import Gift, Category, GiftAddress
 from .forms import CommentForm
+
+
+class AddressListView(generics.ListAPIView):
+    """Вывод списка адресов даров"""
+    queryset = GiftAddress.objects.all()
+    serializer_class = AddressListSerializer
 
 
 class GiftList(generics.ListCreateAPIView):
@@ -19,9 +29,10 @@ class GiftList(generics.ListCreateAPIView):
     """
     queryset = Gift.objects.all()
     serializer_class = GiftListSerializer
+    filter_backends = (DjangoFilterBackend,)
 
 
-class GiftDetail(generics.RetrieveUpdateDestroyAPIView):
+class GiftDetail(generics.RetrieveAPIView):
     """
     Retrieve, update or delete a code gift.
     """
@@ -29,14 +40,9 @@ class GiftDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GiftListSerializer
 
 
-class CommentCreateView(APIView):
-    """Добавление отзыва к фильму"""
-    def post(self, request):
-        comment = CommentCreateSerializer(data=request.data)
-        if comment.is_valid():
-            comment.save()
-        return Response(status=201)
-
+class CommentCreateView(generics.CreateAPIView):
+    """Добавление отзыва"""
+    serializer_class = CommentCreateSerializer
 
 class GiftsView(ListView):
     """Список Даров"""
@@ -44,10 +50,10 @@ class GiftsView(ListView):
     queryset = Gift.objects.all()
 
 
-class GiftDetailView(DetailView):
-    """Полное описание Дара"""
-    model = Gift
-    slug_field = "url"
+#class GiftDetailView(DetailView):
+#    """Полное описание Дара"""
+#    model = Gift
+#    slug_field = "url"
 
 
 class AddComment(View):
