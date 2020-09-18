@@ -8,13 +8,13 @@ from gifts.serializers import (
     GiftListSerializer,
     CommentCreateSerializer,
 )
-from rest_framework import mixins
-from rest_framework import generics
+from rest_framework import mixins, generics, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Gift, Category, GiftAddress
 from .forms import CommentForm
+from .service import GiftFilter
 
 
 class AddressListView(generics.ListAPIView):
@@ -30,6 +30,8 @@ class GiftList(generics.ListCreateAPIView):
     queryset = Gift.objects.all()
     serializer_class = GiftListSerializer
     filter_backends = (DjangoFilterBackend,)
+    filterset_class = GiftFilter
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class GiftDetail(generics.RetrieveAPIView):
@@ -38,7 +40,7 @@ class GiftDetail(generics.RetrieveAPIView):
     """
     queryset = Gift.objects.all()
     serializer_class = GiftListSerializer
-
+    permission_classes = [permissions.IsAuthenticated]
 
 class CommentCreateView(generics.CreateAPIView):
     """Добавление отзыва"""

@@ -1,6 +1,5 @@
 from django.contrib import admin
-
-from .models import Category, GiftAddress, Gift, GiftShot, Comment
+from .models import Category, GiftAddress, Gift, GiftShot, Comment, User
 from crisis_line.models import Case, Nko, Task
 
 from django import forms
@@ -135,3 +134,4 @@ admin.site.site_header = "Django Gifts"
 admin.site.register(Case)
 admin.site.register(Nko)
 admin.site.register(Task)
+admin.site.register(User)

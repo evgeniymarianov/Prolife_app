@@ -22,6 +22,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('gifts/', include("gifts.urls")),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.authtoken')),
+    #path('auth/', include('djoser.urls.jwt')),
     path('cl/', include("crisis_line.urls")),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
