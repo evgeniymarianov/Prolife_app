@@ -8,7 +8,7 @@ from gifts.serializers import (
     GiftListSerializer,
     CommentCreateSerializer,
 )
-from rest_framework import mixins, generics, permissions
+from rest_framework import mixins, generics, permissions, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
@@ -17,40 +17,52 @@ from .forms import CommentForm
 from .service import GiftFilter
 
 
-class AddressListView(generics.ListAPIView):
-    """Вывод списка адресов даров"""
-    queryset = GiftAddress.objects.all()
-    serializer_class = AddressListSerializer
-
-
-class GiftList(generics.ListCreateAPIView):
-    """
-    List all code gifts, or create a new gift.
-    """
-    queryset = Gift.objects.all()
-    serializer_class = GiftListSerializer
+class GiftViewSet(viewsets.ReadOnlyModelViewSet):
+    """Вывод списка фильмов"""
     filter_backends = (DjangoFilterBackend,)
     filterset_class = GiftFilter
-    permission_classes = [permissions.IsAuthenticated]
-
-
-class GiftDetail(generics.RetrieveAPIView):
-    """
-    Retrieve, update or delete a code gift.
-    """
-    queryset = Gift.objects.all()
-    serializer_class = GiftListSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-class CommentCreateView(generics.CreateAPIView):
-    """Добавление отзыва"""
-    serializer_class = CommentCreateSerializer
-
-class GiftsView(ListView):
-    """Список Даров"""
-    model = Gift
     queryset = Gift.objects.all()
 
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return GiftListSerializer
+        elif self.action == "retrieve":
+            return GiftDetailSerializer
+
+# class AddressListView(generics.ListAPIView):
+#     """Вывод списка адресов даров"""
+#     queryset = GiftAddress.objects.all()
+#     serializer_class = AddressListSerializer
+#
+#
+# class GiftList(generics.ListCreateAPIView):
+#     """
+#     List all code gifts, or create a new gift.
+#     """
+#     queryset = Gift.objects.all()
+#     serializer_class = GiftListSerializer
+#     filter_backends = (DjangoFilterBackend,)
+#     filterset_class = GiftFilter
+#     permission_classes = [permissions.IsAuthenticated]
+#
+#
+# class GiftDetail(generics.RetrieveAPIView):
+#     """
+#     Retrieve, update or delete a code gift.
+#     """
+#     queryset = Gift.objects.all()
+#     serializer_class = GiftListSerializer
+#     permission_classes = [permissions.IsAuthenticated]
+#
+# class CommentCreateView(generics.CreateAPIView):
+#     """Добавление отзыва"""
+#     serializer_class = CommentCreateSerializer
+#
+# class GiftsView(ListView):
+#     """Список Даров"""
+#     model = Gift
+#     queryset = Gift.objects.all()
+#
 
 #class GiftDetailView(DetailView):
 #    """Полное описание Дара"""
@@ -58,20 +70,20 @@ class GiftsView(ListView):
 #    slug_field = "url"
 
 
-class AddComment(View):
-    """Отзыв"""
-    def post(self, request, pk):
-        form = CommentForm(request.POST)
-        gift = Gift.objects.get(id=pk)
-        if form.is_valid():
-            form = form.save(commit=False)
-            if request.POST.get("parent", None):
-                form.parent_id = int(request.POST.get("parent"))
-            form.gift = gift
-            form.save()
-        return redirect(gift.get_absolute_url())
-
-
-
-def index(request):
-    return render(request, 'map.html')
+# class AddComment(View):
+#     """Отзыв"""
+#     def post(self, request, pk):
+#         form = CommentForm(request.POST)
+#         gift = Gift.objects.get(id=pk)
+#         if form.is_valid():
+#             form = form.save(commit=False)
+#             if request.POST.get("parent", None):
+#                 form.parent_id = int(request.POST.get("parent"))
+#             form.gift = gift
+#             form.save()
+#         return redirect(gift.get_absolute_url())
+#
+#
+#
+# def index(request):
+#     return render(request, 'map.html')

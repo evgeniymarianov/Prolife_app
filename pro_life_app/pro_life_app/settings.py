@@ -46,7 +46,13 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
-    'djoser'
+    'djoser',
+
+    'oauth2_provider',
+    'social_django',
+    'rest_framework_social_oauth2',
+
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -207,6 +213,12 @@ CKEDITOR_CONFIGS = {
     }
 }
 
+# smtp
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'djangosc876@gmail.com'
+EMAIL_HOST_PASSWORD = 'F00dz!#0'
+EMAIL_PORT = 587
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

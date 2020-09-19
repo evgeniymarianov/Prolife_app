@@ -48,10 +48,20 @@ class GiftAddressSerializer(serializers.ModelSerializer):
 
 
 class GiftListSerializer(serializers.ModelSerializer):
+    #category = serializers.SlugRelatedField(slug_field="name", read_only=True)
+    #user = serializers.SlugRelatedField(slug_field="username", read_only=True)
+    #address = GiftAddressSerializer(many=True)
+    #gift_comments = CommentSerializer(many=True)
+    class Meta:
+        model = Gift
+        fields = "__all__"
+
+
+class GiftDetailSerializer(serializers.ModelSerializer):
     category = serializers.SlugRelatedField(slug_field="name", read_only=True)
     user = serializers.SlugRelatedField(slug_field="username", read_only=True)
     address = GiftAddressSerializer(many=True)
     gift_comments = CommentSerializer(many=True)
     class Meta:
         model = Gift
-        fields = "__all__"
+        exclude = ("photo",)

@@ -1,8 +1,9 @@
 from django.contrib import admin
 from .models import Category, GiftAddress, Gift, GiftShot, Comment, User
 from crisis_line.models import Case, Nko, Task
-
+from django.contrib.auth.admin import UserAdmin
 from django import forms
+from django.conf import settings
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
@@ -134,4 +135,4 @@ admin.site.site_header = "Django Gifts"
 admin.site.register(Case)
 admin.site.register(Nko)
 admin.site.register(Task)
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
